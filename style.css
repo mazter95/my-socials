@@ -1,0 +1,1597 @@
+/* ==========================================================================
+   ZENX ESPORTS × MAZTRAE // IMCUTE — BESPOKE ARCHITECTURE
+   Brutalist-Cyber Editorial System (Zero Vibecoding)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Design Tokens & Color Matrix
+   -------------------------------------------------------------------------- */
+:root {
+  /* High-Contrast Obsidian Matrix */
+  --bg-deep: #07080b;
+  --bg-core: #0d0f14;
+  --bg-card: #12151d;
+  --bg-card-hover: #161a24;
+  --bg-surface: rgba(18, 21, 29, 0.75);
+
+  /* Dual Identity Accents */
+  --accent-editing: #00f0ff;
+  /* Glitch Cyan - Post Production & VFX */
+  --accent-editing-dim: rgba(0, 240, 255, 0.12);
+  --accent-editing-border: rgba(0, 240, 255, 0.35);
+
+  --accent-gaming: #d2ff00;
+  /* Esports Volt - Competitive & Broadcast */
+  --accent-gaming-dim: rgba(210, 255, 0, 0.12);
+  --accent-gaming-border: rgba(210, 255, 0, 0.35);
+
+  --accent-org: #ff2e4d;
+  /* ZenX Crimson Red */
+  --accent-org-dim: rgba(255, 46, 77, 0.12);
+
+  --accent-discord: #5865f2;
+  --accent-instagram: #f43f5e;
+  --accent-youtube: #ff0000;
+
+  /* Typography Colors */
+  --text-pure: #ffffff;
+  --text-main: #e6e8ee;
+  --text-muted: #8b92a2;
+  --text-dim: #4d5464;
+
+  /* Borders & Grids */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --border-cyber: rgba(255, 255, 255, 0.28);
+
+  /* Typography Families */
+  --font-heading: 'Syne', -apple-system, sans-serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Card Cursor Coordinates */
+  --cursor-x: 50%;
+  --cursor-y: 50%;
+}
+
+/* --------------------------------------------------------------------------
+   2. Reset & Technical Base
+   -------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background-color: var(--bg-deep);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  scroll-behavior: smooth;
+  color-scheme: dark;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background-color: var(--bg-deep);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  line-height: 1.55;
+}
+
+::selection {
+  background: var(--accent-gaming);
+  color: #000000;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+  color: inherit;
+}
+
+/* WebGL Silk Shader Background */
+#silk-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Interactive Kinetic Grid Overlay */
+#kinetic-grid-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.35;
+  mix-blend-mode: screen;
+}
+
+.site-frame {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.container {
+  width: 100%;
+  max-width: 1180px;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+}
+
+/* --------------------------------------------------------------------------
+   3. Top Tactical Broadcast Bar
+   -------------------------------------------------------------------------- */
+.master-header {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  width: 100%;
+  padding-block: 0.55rem;
+  border-bottom: 1px solid var(--border-subtle);
+  background: rgba(7, 8, 11, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: all 0.3s ease;
+}
+
+.header-scrolled {
+  background: rgba(7, 8, 11, 0.95);
+  border-bottom-color: var(--border-strong);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.org-brand-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.org-logo-alone {
+  height: 42px;
+  width: 42px;
+  object-fit: contain;
+  transform: scale(1.65);
+  transform-origin: center center;
+  filter: drop-shadow(0 0 10px rgba(255, 46, 77, 0.8));
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
+  margin-inline: 0.35rem;
+  flex-shrink: 0;
+}
+
+.org-brand-tag:hover .org-logo-alone {
+  transform: scale(1.85);
+  filter: drop-shadow(0 0 18px rgba(255, 46, 77, 1));
+}
+
+.org-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.org-name-text {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  color: var(--text-pure);
+}
+
+.org-sub-badge {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--accent-gaming);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.header-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.recruitment-pulse {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 4px;
+  background: rgba(255, 46, 77, 0.1);
+  border: 1px solid rgba(255, 46, 77, 0.35);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #ff5e75;
+  letter-spacing: 0.05em;
+}
+
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-org);
+  box-shadow: 0 0 8px var(--accent-org);
+  animation: radarPulse 1.8s infinite;
+}
+
+@keyframes radarPulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.6);
+    opacity: 0.4;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.timecode-box {
+  display: none;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  border: 1px solid var(--border-subtle);
+  padding: 0.3rem 0.65rem;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+@media (min-width: 860px) {
+  .timecode-box {
+    display: flex;
+  }
+}
+
+.quick-email-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-strong);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.quick-email-btn:hover {
+  background: var(--text-pure);
+  color: #000;
+  border-color: var(--text-pure);
+}
+
+/* --------------------------------------------------------------------------
+   4. Split-Identity Hero Section
+   -------------------------------------------------------------------------- */
+.hero-arena {
+  min-height: calc(100vh - 68px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: clamp(2rem, 4vw, 3.5rem);
+  padding-bottom: clamp(2rem, 4vw, 3.5rem);
+  position: relative;
+}
+
+.hero-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+}
+
+.hero-scroll-cue {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 1rem;
+  margin-inline: auto;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: color 0.25s ease, transform 0.25s ease;
+  cursor: pointer;
+  user-select: none;
+}
+
+.hero-scroll-cue:hover {
+  color: var(--accent-gaming);
+  transform: translateY(2px);
+}
+
+.hero-scroll-cue svg {
+  animation: bounceDown 1.8s infinite;
+}
+
+@keyframes bounceDown {
+
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+
+  50% {
+    transform: translateY(5px);
+    opacity: 1;
+  }
+}
+
+.hero-top-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 1.25rem;
+}
+
+.technical-tag {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.technical-tag .highlight-blue {
+  color: var(--accent-editing);
+}
+
+.technical-tag .highlight-volt {
+  color: var(--accent-gaming);
+}
+
+/* Persona Switch Controller */
+.persona-switch-group {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-strong);
+  padding: 3px;
+  border-radius: 6px;
+}
+
+.persona-switch-btn {
+  padding: 0.35rem 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  letter-spacing: 0.02em;
+}
+
+.persona-switch-btn.active {
+  background: var(--bg-card-hover);
+  color: var(--text-pure);
+  border: 1px solid var(--border-cyber);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.persona-switch-btn:hover:not(.active) {
+  color: var(--text-main);
+}
+
+/* Hero Typography & Identity Presentation */
+.identity-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .identity-grid {
+    grid-template-columns: 1.4fr 1fr;
+  }
+}
+
+.hero-headline-box {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.alias-supertitle {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--accent-editing);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.dual-name-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2.75rem, 6.5vw, 4.75rem);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  color: var(--text-pure);
+  display: flex;
+  flex-direction: column;
+}
+
+.title-part-one {
+  color: var(--text-pure);
+  text-shadow: 0 0 35px rgba(0, 240, 255, 0.15);
+}
+
+.title-separator {
+  color: var(--text-dim);
+  font-weight: 400;
+  margin-inline: 0.25rem;
+}
+
+.title-part-two {
+  color: var(--accent-gaming);
+  text-shadow: 0 0 35px rgba(210, 255, 0, 0.15);
+}
+
+.hero-bio-statement {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+  max-width: 620px;
+}
+
+.hero-bio-statement strong {
+  color: var(--text-main);
+}
+
+/* Tactical Telemetry Card (Hero Right) */
+.telemetry-card {
+  background: rgba(12, 14, 22, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  position: relative;
+  overflow: hidden;
+  -webkit-backdrop-filter: blur(20px) saturate(1.3) url(#liquid-glass-subtle);
+  backdrop-filter: blur(20px) saturate(1.3) url(#liquid-glass-subtle);
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
+    0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.telemetry-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, transparent 50%, rgba(210, 255, 0, 0.15) 50%);
+}
+
+.telemetry-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 0.75rem;
+}
+
+.telemetry-title {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.telemetry-status {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent-editing);
+}
+
+.telemetry-specs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.spec-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.spec-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+
+.spec-value {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-pure);
+}
+
+.spec-value-with-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.spec-logo-img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 5px rgba(255, 46, 77, 0.6));
+  flex-shrink: 0;
+  transform: scale(1.3);
+}
+
+.telemetry-cta-row {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.btn-tactical {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.1rem;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: all 0.2s ease;
+  flex: 1;
+}
+
+.btn-tactical-primary {
+  background: var(--text-pure);
+  color: #000;
+  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.15);
+}
+
+.btn-tactical-primary:hover {
+  background: var(--accent-gaming);
+  box-shadow: 0 4px 20px rgba(210, 255, 0, 0.3);
+  transform: translateY(-2px);
+}
+
+.btn-tactical-outline {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-strong);
+  color: var(--text-main);
+}
+
+.btn-tactical-outline:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: var(--text-pure);
+  transform: translateY(-2px);
+}
+
+/* --------------------------------------------------------------------------
+   5. Filter Strip
+   -------------------------------------------------------------------------- */
+.filter-section {
+  padding-bottom: 2rem;
+}
+
+.filter-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  padding-block: 0.85rem;
+}
+
+.filter-pills-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filter-pill {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.4rem 0.9rem;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  transition: all 0.2s ease;
+}
+
+.filter-pill.active {
+  color: var(--text-pure);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--border-cyber);
+}
+
+.filter-pill:hover:not(.active) {
+  color: var(--text-main);
+}
+
+.filter-counter {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-dim);
+}
+
+/* --------------------------------------------------------------------------
+   6. Bespoke Showcase Grid
+   -------------------------------------------------------------------------- */
+.showcase-arena {
+  padding-bottom: 5rem;
+}
+
+.grid-matrix {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1.5rem;
+}
+
+/* Base Card Architecture — Liquid Glass Material */
+.showcase-card {
+  position: relative;
+  /* Transparent tinted glass base */
+  background: rgba(12, 14, 22, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: clamp(1.5rem, 3vw, 2rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  isolation: isolate;
+  /* Pop-in scroll entrance */
+  opacity: 0;
+  transform: translateY(48px) scale(0.94);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.3s ease,
+    box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
+
+  /* Liquid glass refraction + frosted depth */
+  -webkit-backdrop-filter: blur(24px) saturate(1.4) url(#liquid-glass);
+  backdrop-filter: blur(24px) saturate(1.4) url(#liquid-glass);
+
+  /* Outer ambient glow */
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
+    0 8px 30px rgba(0, 0, 0, 0.4),
+    0 0 0 0.5px rgba(255, 255, 255, 0.08) inset;
+}
+
+.showcase-card.pop-in {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Specular highlight — top edge light reflection */
+.showcase-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    linear-gradient(165deg,
+      rgba(255, 255, 255, 0.12) 0%,
+      rgba(255, 255, 255, 0.04) 15%,
+      transparent 40%);
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity 0.4s ease;
+}
+
+/* Bottom specular edge — simulates bottom-refraction caustic */
+.showcase-card::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.15),
+      rgba(255, 255, 255, 0.06),
+      transparent);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Hover: intensify the glass material */
+.showcase-card.pop-in:hover {
+  transform: translateY(-6px) scale(1.01);
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.1) inset,
+    0 24px 60px rgba(0, 0, 0, 0.5),
+    0 0 50px var(--card-ambient, rgba(100, 100, 255, 0.08)),
+    0 0 0 0.5px rgba(255, 255, 255, 0.12) inset;
+}
+
+.showcase-card:hover::before {
+  background:
+    linear-gradient(165deg,
+      rgba(255, 255, 255, 0.18) 0%,
+      rgba(255, 255, 255, 0.06) 20%,
+      transparent 45%);
+}
+
+.card-layer {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.platform-badge-group {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.platform-icon-frame {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-strong);
+}
+
+.discipline-tag {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.65rem;
+  border-radius: 4px;
+  border: 1px solid var(--border-subtle);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.card-header-with-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.org-card-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  background: rgba(255, 46, 77, 0.08);
+  border: 1px solid rgba(255, 46, 77, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  flex-shrink: 0;
+  box-shadow: 0 0 18px rgba(255, 46, 77, 0.25);
+  overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+
+.showcase-card:hover .org-card-avatar {
+  transform: scale(1.08);
+  box-shadow: 0 0 24px rgba(255, 46, 77, 0.45);
+}
+
+.org-card-logo-img {
+  width: 140%;
+  height: 140%;
+  max-width: none;
+  max-height: none;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(255, 46, 77, 0.5));
+}
+
+.card-title-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-header-with-logo .card-headline {
+  margin-bottom: 0.15rem;
+}
+
+.card-header-with-logo .card-subline {
+  margin-bottom: 0;
+}
+
+.card-headline {
+  font-family: var(--font-heading);
+  font-size: 1.65rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-pure);
+  margin-bottom: 0.25rem;
+}
+
+.card-subline {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+}
+
+.card-body-text {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.card-action-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* --- CARD 1: ZENX ESPORTS ORG DISCORD SERVER (Feature Spotlight) --- */
+.card-zenx-discord {
+  grid-column: span 12;
+  --card-ambient: rgba(255, 46, 77, 0.15);
+  background: rgba(25, 10, 16, 0.4);
+  border-color: rgba(255, 46, 77, 0.18);
+}
+
+@media (min-width: 900px) {
+  .card-zenx-discord {
+    grid-column: span 7;
+  }
+}
+
+.card-zenx-discord .platform-icon-frame {
+  color: #ff2e4d;
+  background: rgba(255, 46, 77, 0.15);
+  border-color: rgba(255, 46, 77, 0.4);
+}
+
+.org-recruitment-banner {
+  background: rgba(255, 46, 77, 0.08);
+  border: 1px solid rgba(255, 46, 77, 0.3);
+  border-radius: 8px;
+  padding: 0.85rem 1.1rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.recruitment-callout {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #ff4762;
+  letter-spacing: 0.05em;
+}
+
+.recruitment-callout-sub {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+/* --- CARD 2: PERSONAL DISCORD ID (Tactical Comms) --- */
+.card-personal-discord {
+  grid-column: span 12;
+  --card-ambient: rgba(88, 101, 242, 0.15);
+  background: rgba(14, 12, 28, 0.4);
+  border-color: rgba(88, 101, 242, 0.15);
+}
+
+@media (min-width: 900px) {
+  .card-personal-discord {
+    grid-column: span 5;
+  }
+}
+
+.card-personal-discord .platform-icon-frame {
+  color: var(--accent-discord);
+  background: rgba(88, 101, 242, 0.12);
+  border-color: rgba(88, 101, 242, 0.35);
+}
+
+.discord-id-display-box {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.discord-tag-val {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-pure);
+  letter-spacing: 0.02em;
+}
+
+.direct-dm-tag {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--accent-editing);
+}
+
+/* --- CARD 3: EDITING YOUTUBE (Maztrae VFX & Montages) --- */
+.card-youtube-editing {
+  grid-column: span 12;
+  --card-ambient: rgba(0, 240, 255, 0.12);
+  background: rgba(8, 14, 22, 0.4);
+  border-color: rgba(0, 240, 255, 0.12);
+}
+
+@media (min-width: 900px) {
+  .card-youtube-editing {
+    grid-column: span 6;
+  }
+}
+
+.card-youtube-editing .platform-icon-frame {
+  color: var(--accent-editing);
+  background: var(--accent-editing-dim);
+  border-color: var(--accent-editing-border);
+}
+
+/* Film / Edit Timecode Mockup */
+.edit-timeline-stage {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.timeline-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-dim);
+}
+
+.timeline-timecode {
+  color: var(--accent-editing);
+  font-weight: 700;
+}
+
+.timeline-tracks {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.timeline-bar {
+  height: 6px;
+  border-radius: 2px;
+}
+
+.track-vfx {
+  width: 75%;
+  background: linear-gradient(90deg, #00f0ff, #7928ca);
+}
+
+.track-audio {
+  width: 90%;
+  background: linear-gradient(90deg, #ff007a, #00f0ff);
+}
+
+/* --- CARD 4: GAMING YOUTUBE (imCute Valorant & Streams) --- */
+.card-youtube-gaming {
+  grid-column: span 12;
+  --card-ambient: rgba(210, 255, 0, 0.12);
+  background: rgba(14, 18, 8, 0.4);
+  border-color: rgba(210, 255, 0, 0.12);
+}
+
+@media (min-width: 900px) {
+  .card-youtube-gaming {
+    grid-column: span 6;
+  }
+}
+
+.card-youtube-gaming .platform-icon-frame {
+  color: var(--accent-gaming);
+  background: var(--accent-gaming-dim);
+  border-color: var(--accent-gaming-border);
+}
+
+/* Esports Killfeed / Match Banner Mockup */
+.match-feed-stage {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.feed-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.feed-game-tag {
+  color: var(--accent-gaming);
+  font-weight: 700;
+}
+
+.feed-status-badge {
+  background: rgba(210, 255, 0, 0.1);
+  color: var(--accent-gaming);
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.68rem;
+}
+
+/* --- CARD 5: EDITING INSTAGRAM (@maztr_amv) --- */
+.card-insta-editing {
+  grid-column: span 12;
+  --card-ambient: rgba(244, 63, 94, 0.12);
+  background: rgba(22, 10, 14, 0.4);
+  border-color: rgba(244, 63, 94, 0.12);
+}
+
+@media (min-width: 900px) {
+  .card-insta-editing {
+    grid-column: span 4;
+  }
+}
+
+.card-insta-editing .platform-icon-frame {
+  color: #f43f5e;
+  background: rgba(244, 63, 94, 0.12);
+  border-color: rgba(244, 63, 94, 0.35);
+}
+
+/* --- CARD 6: ZENX ESPORTS OFFICIAL INSTAGRAM (@zenx.0fficial) --- */
+.card-insta-org {
+  grid-column: span 12;
+  --card-ambient: rgba(255, 46, 77, 0.12);
+  background: rgba(22, 10, 14, 0.4);
+  border-color: rgba(255, 46, 77, 0.12);
+}
+
+@media (min-width: 900px) {
+  .card-insta-org {
+    grid-column: span 4;
+  }
+}
+
+.card-insta-org .platform-icon-frame {
+  color: var(--accent-org);
+  background: var(--accent-org-dim);
+  border-color: rgba(255, 46, 77, 0.35);
+}
+
+/* --- CARD 7: DIRECT COMMS & COMMISSIONS TERMINAL (Email) --- */
+.card-email-terminal {
+  grid-column: span 12;
+  --card-ambient: rgba(145, 107, 191, 0.12);
+  background: rgba(16, 12, 24, 0.4);
+  border-color: rgba(145, 107, 191, 0.12);
+}
+
+@media (min-width: 900px) {
+  .card-email-terminal {
+    grid-column: span 4;
+  }
+}
+
+.card-email-terminal .platform-icon-frame {
+  color: var(--text-pure);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--border-strong);
+}
+
+/* Button & Action Link Styling */
+.card-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.55rem 1rem;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.card-btn-solid {
+  background: var(--text-pure);
+  color: #000000;
+}
+
+.card-btn-solid:hover {
+  background: var(--accent-gaming);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(210, 255, 0, 0.3);
+}
+
+.card-btn-ghost {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-strong);
+  color: var(--text-main);
+}
+
+.card-btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--text-pure);
+  transform: translateY(-2px);
+}
+
+.copied-active {
+  background: var(--accent-gaming) !important;
+  color: #000000 !important;
+  border-color: var(--accent-gaming) !important;
+  box-shadow: 0 0 16px rgba(210, 255, 0, 0.5) !important;
+}
+
+
+
+/* --------------------------------------------------------------------------
+   8. Tactical Notification Shelf (Toast)
+   -------------------------------------------------------------------------- */
+.toast-shelf {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+
+.tactical-toast {
+  pointer-events: auto;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 6px;
+  background: #0e1117;
+  border: 1px solid var(--border-cyber);
+  color: var(--text-pure);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7), 0 0 16px rgba(210, 255, 0, 0.2);
+  transform: translateY(16px);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.tactical-toast.visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.toast-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-gaming);
+  box-shadow: 0 0 8px var(--accent-gaming);
+}
+
+.toast-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background: var(--accent-gaming);
+  width: 100%;
+  animation: drainBar 3.8s linear forwards;
+}
+
+@keyframes drainBar {
+  0% {
+    width: 100%;
+  }
+
+  100% {
+    width: 0%;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   9. Footer Section
+   -------------------------------------------------------------------------- */
+.master-footer {
+  border-top: 1px solid var(--border-subtle);
+  padding-block: 2.5rem 3rem;
+  margin-top: auto;
+}
+
+.footer-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .footer-row {
+    flex-direction: row;
+    text-align: left;
+  }
+}
+
+.footer-sig {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text-pure);
+}
+
+.footer-logo-img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 5px rgba(255, 46, 77, 0.5));
+  flex-shrink: 0;
+  transform: scale(1.3);
+}
+
+.footer-credits {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+.footer-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .footer-right {
+    align-items: flex-end;
+  }
+}
+
+.footer-subtle-thanks {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.2);
+  letter-spacing: 0.04em;
+  margin-top: 0.35rem;
+  user-select: none;
+  transition: color 0.3s ease;
+}
+
+.footer-subtle-thanks:hover {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* --------------------------------------------------------------------------
+   10. Responsiveness & Accessibility
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .header-meta {
+    gap: 0.5rem;
+  }
+  .recruitment-pulse span:last-child {
+    display: none;
+  }
+  .recruitment-pulse {
+    padding: 0.45rem;
+  }
+  .quick-email-btn span {
+    display: none;
+  }
+  .quick-email-btn {
+    padding: 0.45rem;
+  }
+  .org-logo-alone {
+    transform: scale(1.3);
+  }
+  .org-brand-tag:hover .org-logo-alone {
+    transform: scale(1.45);
+  }
+  .footer-row {
+    flex-direction: column;
+    text-align: center;
+  }
+  .footer-right {
+    align-items: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .dual-name-title {
+    font-size: 2.25rem;
+  }
+
+  .persona-switch-group {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .persona-switch-btn {
+    flex: 1;
+    text-align: center;
+    padding: 0.55rem 0.4rem;
+    font-size: 0.7rem;
+  }
+
+  .telemetry-specs {
+    grid-template-columns: 1fr;
+  }
+
+  .telemetry-cta-row {
+    flex-direction: column;
+  }
+
+  .btn-tactical {
+    padding: 0.75rem 1.1rem;
+  }
+
+  .card-action-bar {
+    flex-direction: column;
+  }
+
+  .card-btn {
+    width: 100%;
+    padding: 0.75rem 1rem;
+  }
+
+  .filter-strip {
+    justify-content: center;
+  }
+
+  .toast-shelf {
+    left: 1rem;
+    right: 1rem;
+    bottom: 1.5rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   11. Tactical Cyber Decode Scanner (One-Time Initial Load)
+   -------------------------------------------------------------------------- */
+.decode-scanner-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(7, 8, 11, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: all;
+  opacity: 1;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.decode-scanner-overlay.scan-done {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.scanner-laser-beam {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg,
+      transparent,
+      var(--accent-gaming) 30%,
+      var(--accent-editing) 50%,
+      var(--accent-org) 70%,
+      transparent);
+  box-shadow: 0 0 16px var(--accent-gaming), 0 0 32px var(--accent-editing);
+  animation: laserScan 1.3s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  pointer-events: none;
+}
+
+@keyframes laserScan {
+  0% {
+    top: 0%;
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  85% {
+    opacity: 1;
+  }
+
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+.scanner-hud {
+  width: min(460px, 90vw);
+  background: rgba(14, 17, 24, 0.95);
+  border: 1px solid var(--border-cyber);
+  border-radius: 10px;
+  padding: 1.5rem 1.75rem;
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.9),
+    0 0 40px rgba(0, 240, 255, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.scanner-hud-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 0.75rem;
+}
+
+.scanner-hud-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-gaming);
+  box-shadow: 0 0 10px var(--accent-gaming);
+  animation: radarPulse 1s infinite;
+}
+
+.scanner-hud-title {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--accent-gaming);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.scanner-hud-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.scanner-code-stream {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--text-pure);
+  min-height: 1.3rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: 0.02em;
+}
+
+.scanner-progress-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.scanner-progress-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-org), var(--accent-editing), var(--accent-gaming));
+  transition: width 0.04s linear;
+}
+
+.scanner-hud-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.scanner-pct {
+  color: var(--accent-editing);
+  font-weight: 700;
+  font-size: 0.8rem;
+}

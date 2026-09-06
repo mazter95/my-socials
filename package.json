@@ -1,0 +1,16 @@
+{
+  "name": "socials",
+  "version": "1.0.0",
+  "description": "A cinematic, modern, and high-performance single-page personal landing website designed to showcase your social channels and contact links (**Discord**, **Instagram**, **YouTube**, and **Email**) with an editorial aesthetic, smooth animations, and zero-framework simplicity.",
+  "main": "kinetic-grid.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "animejs": "^4.5.0"
+  }
+}

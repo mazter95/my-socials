@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maztrae // imCute — ZenX Esports &amp; VFX Video Editor</title>
+
+  <meta name="description"
+    content="Official digital hub for Maztrae (VFX Video Editor &amp; AMV Creator) and imCute (Competitive Gamer &amp; Streamer under ZenX Esports).">
+  <meta name="keywords"
+    content="Maztrae, imCute, ZenX Esports, AMV, Montages, VFX, Video Editor, Valorant, Gaming, Discord">
+  <meta name="author" content="Maztrae // imCute">
+  <meta name="theme-color" content="#07080b">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Maztrae // imCute — ZenX Esports &amp; VFX Editor">
+  <meta property="og:description"
+    content="Explore VFX editing reels, esports gaming content, ZenX server recruitment, and direct inquiries.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='14' fill='%2307080b'/><path d='M25 75 L50 25 L75 75 Z' fill='none' stroke='%23d2ff00' stroke-width='8'/><circle cx='50' cy='60' r='8' fill='%2300f0ff'/></svg>">
+
+  <!-- Google Fonts: Syne, Inter, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- anime.js v3 via CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- WebGL Silk Flow Shader Background -->
+  <canvas id="silk-canvas" aria-hidden="true"></canvas>
+
+  <!-- Kinetic Grid Overlay (interactive, pointer-events none) -->
+  <canvas id="kinetic-grid-canvas" aria-hidden="true"></canvas>
+
+  <!-- Liquid Glass SVG Filters (hidden, referenced by CSS) -->
+  <svg width="0" height="0" style="position: absolute; pointer-events: none;" aria-hidden="true">
+    <defs>
+      <!-- Primary liquid glass refraction filter -->
+      <filter id="liquid-glass" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.012 0.012" numOctaves="3" seed="5" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="18" xChannelSelector="R" yChannelSelector="G"
+          result="displaced" />
+        <feGaussianBlur in="displaced" stdDeviation="0.5" result="softened" />
+      </filter>
+      <!-- Lighter variant for smaller elements -->
+      <filter id="liquid-glass-subtle" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.018 0.018" numOctaves="2" seed="8" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="8" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- Tactical Cyber Decode Scanner (One-time on entry) -->
+  <div class="decode-scanner-overlay" id="decode-scanner" aria-hidden="true">
+    <div class="scanner-grid-backdrop"></div>
+    <div class="scanner-laser-beam"></div>
+    <div class="scanner-hud">
+      <div class="scanner-hud-header">
+        <span class="scanner-hud-dot"></span>
+        <span class="scanner-hud-title">SYSTEM PROTOCOL // BIOMETRIC DECODE</span>
+      </div>
+      <div class="scanner-hud-body">
+        <div class="scanner-code-stream" id="scanner-code-stream">INITIALIZING ZENX ESPORTS REPERTORY...</div>
+        <div class="scanner-progress-bar">
+          <div class="scanner-progress-fill" id="scanner-progress-fill"></div>
+        </div>
+        <div class="scanner-hud-footer">
+          <span class="scanner-status" id="scanner-status-text">SCANNING ID: MAZTRAE // IMCUTE</span>
+          <span class="scanner-pct" id="scanner-pct-text">0%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="site-frame">
+
+    <!-- Top Tactical Broadcast Bar -->
+    <header class="master-header" id="master-header">
+      <div class="container header-inner">
+        <div class="org-brand-tag">
+          <img src="zenx-logo.png" alt="ZenX Esports Logo" class="org-logo-alone" title="ZenX Esports">
+          <div class="org-info">
+            <span class="org-name-text">ZENX ESPORTS</span>
+            <span class="org-sub-badge">AFFILIATED CREATOR</span>
+          </div>
+        </div>
+
+        <div class="header-meta">
+          <div class="recruitment-pulse" title="ZenX Esports Roster Recruitment">
+            <span class="pulse-dot"></span>
+            <span>RECRUITING PLAYERS</span>
+          </div>
+
+          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=mazter95amv@gmail.com&su=Commissions%20Inquiry%20%E2%80%94%20Maztrae%20%2F%2F%20imCute" target="_blank" rel="noopener noreferrer" class="quick-email-btn" aria-label="Direct Email via Gmail">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+              <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+            <span>COMMISSIONS</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Arena -->
+    <main>
+
+      <!-- Split-Identity Hero Section -->
+      <section class="hero-arena" aria-label="Creator Identity">
+        <div class="container hero-layout">
+
+          <div class="hero-top-strip">
+            <div class="technical-tag">
+              <span>STATUS:</span>
+              <span class="highlight-volt" id="active-alias-badge">DUAL DISCIPLINE CREATOR</span>
+              <span>//</span>
+              <span class="highlight-blue">VFX &amp; GAMING</span>
+            </div>
+
+            <!-- Interactive Identity Switch -->
+            <div class="persona-switch-group" role="group" aria-label="Filter Persona">
+              <button class="persona-switch-btn active" data-persona="all">ALL FEEDS</button>
+              <button class="persona-switch-btn" data-persona="editing">MAZTRAE [VFX]</button>
+              <button class="persona-switch-btn" data-persona="gaming">IMCUTE [GAMING]</button>
+            </div>
+          </div>
+
+          <div class="identity-grid">
+            <div class="hero-headline-box">
+              <span class="alias-supertitle">OFFICIAL CREATIVE &amp; ESPORTS REPERTORY</span>
+              <h1 class="dual-name-title">
+                <span class="title-part-one">Maztrae</span>
+                <span class="title-part-two"><span class="title-separator">//</span> imCute</span>
+              </h1>
+              <p class="hero-bio-statement">
+                <strong>Esports Competitor</strong> &amp; <strong>VFX Video Editor</strong>. Self-taught creator
+                engineering high-velocity AMVs, stylized cinematics, and mographs as <em>Maztrae</em>, while streaming
+                competitive Valorant and narrative campaigns as <em>imCute</em> for <em>ZenX Esports</em>.
+              </p>
+            </div>
+
+            <!-- Telemetry Spec Card -->
+            <div class="telemetry-card">
+              <div class="telemetry-header">
+                <span class="telemetry-title">OPERATIONAL TELEMETRY</span>
+                <span class="telemetry-status">● ACTIVE</span>
+              </div>
+              <div class="telemetry-specs">
+                <div class="spec-item">
+                  <span class="spec-label">ESPORTS ORG</span>
+                  <span class="spec-value">ZenX Esports</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">PRIMARY TITLES</span>
+                  <span class="spec-value">Valorant / Story</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">VFX SPECIALTY</span>
+                  <span class="spec-value">AMV / 3D Mographs</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">DISCORD ID</span>
+                  <span class="spec-value">@maztr_ae</span>
+                </div>
+              </div>
+
+              <div class="telemetry-cta-row">
+                <a href="#showcase-grid" class="btn-tactical btn-tactical-primary">
+                  <span>Explore Channels</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <polyline points="19 12 12 19 5 12"></polyline>
+                  </svg>
+                </a>
+                <button class="btn-tactical btn-tactical-outline copy-action" data-copy-type="discord"
+                  aria-label="Copy Personal Discord Tag">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  <span class="btn-label">Copy Discord</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Scroll to Socials Cue -->
+          <a href="#showcase-grid" class="hero-scroll-cue" aria-label="Scroll to Social Channels">
+            <span class="scroll-cue-label">EXPLORE HUBS &amp; SOCIALS</span>
+            <div class="scroll-cue-mouse">
+              <span class="scroll-cue-wheel"></span>
+            </div>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M7 13l5 5 5-5M7 6l5 5 5-5"/>
+            </svg>
+          </a>
+
+        </div>
+      </section>
+
+      <!-- Discipline Filter Bar -->
+      <section class="filter-section">
+        <div class="container filter-strip">
+          <div class="filter-pills-wrap" role="tablist">
+            <button class="filter-pill active" data-filter="all" role="tab">All Hubs (7)</button>
+            <button class="filter-pill" data-filter="editing" role="tab">VFX &amp; Editing</button>
+            <button class="filter-pill" data-filter="gaming" role="tab">Esports &amp; Gaming</button>
+          </div>
+          <div class="filter-counter">SHOWING ALL ACTIVE PLATFORMS</div>
+        </div>
+      </section>
+
+      <!-- Bespoke Showcase Grid -->
+      <section class="showcase-arena" id="showcase-grid" aria-label="Channels and Links">
+        <div class="container">
+          <div class="grid-matrix">
+
+            <!-- 1. FEATURED: ZENX ESPORTS ORG DISCORD SERVER -->
+            <article class="showcase-card card-zenx-discord" data-category="gaming" id="card-zenx">
+              <div class="card-layer">
+                <div class="card-top">
+                  <div class="platform-badge-group">
+                    <div class="platform-icon-frame" aria-hidden="true">
+                      <!-- Discord SVG -->
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                          d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.893.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z" />
+                      </svg>
+                    </div>
+                    <span class="discipline-tag" style="color: #ff2e4d; border-color: rgba(255, 46, 77, 0.4);">ESPORTS
+                      ORG SERVER</span>
+                  </div>
+                </div>
+
+                <div class="card-content">
+                  <h2 class="card-headline">ZenX Esports Discord</h2>
+                  <div class="card-subline">discord.gg/8CDZR4Md2M</div>
+
+                  <div class="org-recruitment-banner">
+                    <div class="recruitment-callout">
+                      <span class="pulse-dot"></span>
+                      <span>ACTIVE RECRUITMENT OPEN</span>
+                    </div>
+                    <span class="recruitment-callout-sub">ROSTER &amp; COMMUNITY TRYOUTS</span>
+                  </div>
+
+                  <p class="card-body-text">
+                    The official tournament and scrim hub for <strong>ZenX Esports</strong>. We are actively scouting
+                    and recruiting competitive players across titles. Join the server to participate in tryouts,
+                    community matches, and team announcements.
+                  </p>
+                </div>
+
+                <div class="card-action-bar">
+                  <a href="https://discord.gg/8CDZR4Md2M" target="_blank" rel="noopener noreferrer"
+                    class="card-btn card-btn-solid">
+                    <span>Join ZenX Discord Server</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.5">
+                      <line x1="7" y1="17" x2="17" y2="7"></line>
+                      <polyline points="7 7 17 7 17 17"></polyline>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <!-- 2. PERSONAL DISCORD ID -->
+            <article class="showcase-card card-personal-discord" data-category="both" id="card-discord-personal">
+              <div class="card-layer">
+                <div class="card-top">
+                  <div class="platform-badge-group">
+                    <div class="platform-icon-frame" aria-hidden="true">
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                          d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.893.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z" />
+                      </svg>
+                    </div>
+                    <span class="discipline-tag"
+                      style="color: var(--accent-discord); border-color: rgba(88, 101, 242, 0.4);">DIRECT USER ID</span>
+                  </div>
+                </div>
+
+                <div class="card-content">
+                  <h2 class="card-headline">Personal Discord</h2>
+                  <div class="card-subline">Direct contact &amp; commissions</div>
+
+                  <div class="discord-id-display-box">
+                    <span class="discord-tag-val">maztr_ae</span>
+                    <span class="direct-dm-tag">DMs OPEN</span>
+                  </div>
+
+                  <p class="card-body-text">
+                    Add me directly on Discord for private commissions, video editing inquiries, or direct 1-on-1 chats.
+                  </p>
+                </div>
+
+                <div class="card-action-bar">
+                  <button class="card-btn card-btn-solid copy-action" data-copy-type="discord"
+                    aria-label="Copy Discord Tag">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.5">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    <span class="btn-label">Copy Discord ID</span>
+                  </button>
+                </div>
+              </div>
+            </article>
+
+            <!-- 3. YOUTUBE EDITING CHANNEL (Maztrae) -->
+            <article class="showcase-card card-youtube-editing" data-category="editing" id="card-yt-edit">
+              <div class="card-layer">
+                <div class="card-top">
+                  <div class="platform-badge-group">
+                    <div class="platform-icon-frame" aria-hidden="true">
+                      <!-- YouTube SVG -->
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                          d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                      </svg>
+                    </div>
+                    <span class="discipline-tag"
+                      style="color: var(--accent-editing); border-color: var(--accent-editing-border);">VFX &amp;
+                      POST-PRODUCTION</span>
+                  </div>
+                </div>
+
+                <div class="card-content">
+                  <h2 class="card-headline">YouTube // Maztrae</h2>
+                  <div class="card-subline">@maztrae &bull; AMVs &bull; Montages &bull; Mographs</div>
+
+                  <p class="card-body-text">
+                    Dedicated showcase for original anime music videos (AMVs), high-intensity cinematic montages, and
+                    custom 3D motion graphics. Focused on sound design, frame pacing, and custom VFX transitions.
+                  </p>
+                </div>
+
+                <div class="card-action-bar">
+                  <a href="https://youtube.com/@maztrae?si=mIlxpj7yR8b9DYZf" target="_blank" rel="noopener noreferrer"
+                    class="card-btn card-btn-solid">
+                    <span>Watch Editing Channel</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.5">
+                      <line x1="7" y1="17" x2="17" y2="7"></line>
+                      <polyline points="7 7 17 7 17 17"></polyline>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <!-- 4. YOUTUBE GAMING CHANNEL (imCute) -->
+            <article class="showcase-card card-youtube-gaming" data-category="gaming" id="card-yt-game">
+              <div class="card-layer">
+                <div class="card-top">
+                  <div class="platform-badge-group">
+                    <div class="platform-icon-frame" aria-hidden="true">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                          d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                      </svg>
+                    </div>
+                    <span class="discipline-tag"
+                      style="color: var(--accent-gaming); border-color: var(--accent-gaming-border);">ESPORTS &amp;
+                      BROADCAST</span>
+                  </div>
+                </div>
+
+                <div class="card-content">
+                  <h2 class="card-headline">YouTube // imCute</h2>
+                  <div class="card-subline">@itzrealcute &bull; Valorant &bull; Story Games &bull; Streams</div>
+
+                  <p class="card-body-text">
+                    Competitive gaming broadcasts, tournament highlights, clutch clips, and comprehensive story mode
+                    playthroughs under the <em>imCute</em> alias.
+                  </p>
+                </div>
+
+                <div class="card-action-bar">
+                  <a href="https://youtube.com/@itzrealcute?si=TwHKW9-2bJaWd8RN" target="_blank"
+                    rel="noopener noreferrer" class="card-btn card-btn-solid">
+                    <span>Watch Gaming Channel</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.5">
+                      <line x1="7" y1="17" x2="17" y2="7"></line>
+                      <polyline points="7 7 17 7 17 17"></polyline>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <!-- 5. INSTAGRAM EDITING (@maztr_amv) -->
+            <article class="showcase-card card-insta-editing" data-category="editing" id="card-ig-edit">
+              <div class="card-layer">
+                <div class="card-top">
+                  <div class="platform-badge-group">
+                    <div class="platform-icon-frame" aria-hidden="true">
+                      <!-- Instagram SVG -->
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                      </svg>
+                    </div>
+                    <span class="discipline-tag" style="color: #f43f5e; border-color: rgba(244, 63, 94, 0.35);">VFX
+                      REELS</span>
+                  </div>
+                </div>
+
+                <div class="card-content">
+                  <h2 class="card-headline">Maztrae AMV</h2>
+                  <div class="card-subline">@maztr_amv</div>
+                  <p class="card-body-text">
+                    Short-form edits, audio-synced reel cuts, motion graphics experiments, and work-in-progress
+                    previews.
+                  </p>
+                </div>
+
+                <div class="card-action-bar">
+                  <a href="https://www.instagram.com/maztr_amv/" target="_blank" rel="noopener noreferrer"
+                    class="card-btn card-btn-ghost">
+                    <span>Follow @maztr_amv</span>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <line x1="7" y1="17" x2="17" y2="7"></line>
+                      <polyline points="7 7 17 7 17 17"></polyline>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <!-- 6. INSTAGRAM ZENX ESPORTS (@zenx.0fficial) -->
+            <article class="showcase-card card-insta-org" data-category="gaming" id="card-ig-org">
+              <div class="card-layer">
+                <div class="card-top">
+                  <div class="platform-badge-group">
+                    <div class="platform-icon-frame" aria-hidden="true">
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                      </svg>
+                    </div>
+                    <span class="discipline-tag"
+                      style="color: var(--accent-org); border-color: rgba(255, 46, 77, 0.35);">ORG OFFICIAL</span>
+                  </div>
+                </div>
+
+                <div class="card-content">
+                  <h2 class="card-headline">ZenX Esports</h2>
+                  <div class="card-subline">@zenx.0fficial</div>
+                  <p class="card-body-text">
+                    Official ZenX Esports announcements, roster reveals, tournament brackets, match schedules, and org
+                    graphics.
+                  </p>
+                </div>
+
+                <div class="card-action-bar">
+                  <a href="https://www.instagram.com/zenx.0fficial/" target="_blank" rel="noopener noreferrer"
+                    class="card-btn card-btn-ghost">
+                    <span>Follow @zenx.0fficial</span>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <line x1="7" y1="17" x2="17" y2="7"></line>
+                      <polyline points="7 7 17 7 17 17"></polyline>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <!-- 7. DIRECT COMMS & COMMISSIONS TERMINAL -->
+            <article class="showcase-card card-email-terminal" data-category="both" id="card-email">
+              <div class="card-layer">
+                <div class="card-top">
+                  <div class="platform-badge-group">
+                    <div class="platform-icon-frame" aria-hidden="true">
+                      <!-- Mail SVG -->
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                      </svg>
+                    </div>
+                    <span class="discipline-tag"
+                      style="color: var(--text-pure); border-color: var(--border-strong);">OFFICIAL INQUIRIES</span>
+                  </div>
+                </div>
+
+                <div class="card-content">
+                  <h2 class="card-headline">Commercial Inquiries</h2>
+                  <div class="card-subline">mazter95amv@gmail.com</div>
+                  <p class="card-body-text">
+                    For video editing commissions, montage bookings, esports sponsorships, brand partnerships, or
+                    business matters.
+                  </p>
+                </div>
+
+                <div class="card-action-bar">
+                  <a href="https://mail.google.com/mail/?view=cm&fs=1&to=mazter95amv@gmail.com&su=Commercial%20%2F%20Commission%20Inquiry%20%E2%80%94%20Maztrae" target="_blank" rel="noopener noreferrer" class="card-btn card-btn-solid">
+                    <span>Send Mail via Gmail</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <line x1="7" y1="17" x2="17" y2="7"></line>
+                      <polyline points="7 7 17 7 17 17"></polyline>
+                    </svg>
+                  </a>
+                  <button class="card-btn card-btn-ghost copy-action" data-copy-type="email" aria-label="Copy Email">
+                    <span class="btn-label">Copy</span>
+                  </button>
+                </div>
+              </div>
+            </article>
+
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Tactical Notification Toast Shelf -->
+    <div class="toast-shelf" id="toast-shelf" aria-live="polite"></div>
+
+    <!-- Master Footer -->
+    <footer class="master-footer">
+      <div class="container footer-row">
+        <div class="footer-left">
+          <div class="footer-sig">MAZTRAE // IMCUTE &times; ZENX ESPORTS</div>
+          <div class="footer-credits">Self-taught VFX Editor &bull; Competitive Esports Athlete</div>
+        </div>
+        <div class="footer-right">
+          <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dim);">&copy; 2026 ALL
+            RIGHTS RESERVED</span>
+          <div class="footer-subtle-thanks">Thanks to Gouri Nandana D</div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="silk-shader.js"></script>
+  <script src="kinetic-grid.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>
